@@ -76,6 +76,12 @@ sub vcl_recv {
     return (pass);
   }
 
+
+  ###
+  # Block httpoxy https://httpoxy.org/
+  ###
+  unset req.http.proxy;
+
 {% if varnish_uri_blacklist_enabled %}
   if ((req.url ~ "{{ varnish_uri_blacklist_regexp }}")) {
     set req.http.X-Passthrough-Reason = "Path in Blacklist";
